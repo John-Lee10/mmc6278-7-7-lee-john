@@ -14,7 +14,7 @@ CREATE TABLE inventory (
 -- username that's a 100 char varchar and unique
 -- password that's a 200 char varchar
 CREATE TABLE users (
-  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   username VARCHAR(100) NOT NULL UNIQUE,
   password VARCHAR(200) NOT NULL
 );
