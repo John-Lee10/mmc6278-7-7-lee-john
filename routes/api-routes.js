@@ -134,10 +134,9 @@ router.post('/login', async (req, res) => {
   // If the password matches, set req.session.loggedIn to true
   req.session.isLoggedIn = true
   // set req.session.userId to the user's id
-  req.session.userId = userId
+  req.session.user = user
   // call req.session.save and in the callback redirect to /
   req.session.save(() => res.redirect('/'))
-  
 })
 
 router.get('/logout', async (req, res) => {
