@@ -116,27 +116,31 @@ router.post('/user', async (req, res) => {
 
 // This route will log the user in and create the session
 router.post('/login', async (req, res) => {
-  const {username, password} = req.body
+  try{
+    const {username, password} = req.body
   // if the username or password is not provided, return a 400 status
-  if (!(username && password))
-  return res.status(400).send('must include username and password')
+    if (!(username && password))
+    return res.status(400).send('must include username and password')
   // Query the database by the username for the user
-  const [[user]] = await db.query(
-    `SELECT * FROM users WHERE username=?`,
-    username
-  )
+    const [[user]] = await db.query(
+      `SELECT * FROM users WHERE username=?`,
+      username
+    )
   // If no user is found, return a 400 status code
-  if (!user) return res.status(400).send('user not found')
+    if (!user) return res.status(400).send('user not found')
   // If the user is found, use bcrypt.compare to compare the password to the hash
-  const isCorrectPassword = await bcrypt.compare(password, user.password)
+    const isCorrectPassword = await bcrypt.compare(password, user.password)
   // If the password is wrong, return a 400 status code
-  if (!isCorrectPassword) return res.status(400).send('incorrect password')
+    if (!isCorrectPassword) return res.status(400).send('incorrect password')
   // If the password matches, set req.session.loggedIn to true
-  req.session.isLoggedIn = true
+    req.session.isLoggedIn = true
   // set req.session.userId to the user's id
-  req.session.user = user
+    req.session.userId = user.id
   // call req.session.save and in the callback redirect to /
-  req.session.save(() => res.redirect('/'))
+    req.session.save(() => res.redirect('/'))
+  } catch(err) {
+    res.status(500).send('error logging in')
+  }
 })
 
 router.get('/logout', async (req, res) => {
