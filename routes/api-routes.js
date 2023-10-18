@@ -133,7 +133,7 @@ router.post('/login', async (req, res) => {
   // If the password is wrong, return a 400 status code
     if (!isCorrectPassword) return res.status(400).send('incorrect password')
   // If the password matches, set req.session.loggedIn to true
-    req.session.isLoggedIn = true
+    req.session.loggedIn = true
   // set req.session.userId to the user's id
     req.session.userId = user.id
   // call req.session.save and in the callback redirect to /
